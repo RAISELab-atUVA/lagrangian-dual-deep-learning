@@ -4,9 +4,15 @@ This repository provides implementation of our Lagrangian Duality method for app
 
 ### 1. Intro
 
-The goal of our project is to investigate the applicability of Lagrangian duality for deep learning model under prediction constraints. The constraints might arise from social requirements such as the model should not favor certain groups of people than the other, see [Fairness subsection](#fair) . Or the constraints might come from some prior knowledge in which for a given set of inputs we know the ordering of their predictions.
+The goal of our project is to investigate the applicability of Lagrangian duality for deep learning model under prediction constraints. The constraints might arise from social requirements such as the model should not favor certain groups of people than the other, see [Fairness subsection](#fair) . Or the constraints might come from some prior knowledge in which for a given set of inputs we know the ordering of their predictions, see [Transprecision Computing subsection](#trans).
 
 #### <a name="fair"> 1.a Fairness </a>
+
+
+#### <a name="trans"> 1.b Transprecision Computing </a>
+
+
+
 
 
 
