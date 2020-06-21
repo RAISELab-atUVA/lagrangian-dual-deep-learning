@@ -25,9 +25,9 @@ def compute_fairness_score(y_true, y_pred, z_true):
   p0 = y_pred[z_true==0]
   p1 = np.sum(p1)/float(len(p1))
   p0 = np.sum(p0)/float(len(p0))
-
-
-
+  acc0 = accuracy_score(y_true[z_true == 0], y_pred[z_true == 0])
+  acc1 = accuracy_score(y_true[z_true == 1], y_pred[z_true == 1])
+  return acc, abs(p1 - p0), acc0, acc1
 
 def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
 
