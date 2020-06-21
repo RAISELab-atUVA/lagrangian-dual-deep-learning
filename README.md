@@ -1,5 +1,7 @@
 ### Lagrangian Duality for Constrained Deep Learning
 
+This repository provides implementation of our Lagrangian Duality method for Fairness and Transprecision Computing applications introduced in our paper,  <a href="https://arxiv.org/pdf/2001.09394.pdf" target="_blank">ECML' 20</a>
+
 
 
 #### References
