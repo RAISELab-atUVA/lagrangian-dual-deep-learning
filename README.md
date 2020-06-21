@@ -1,1 +1,1 @@
-# lagrangian-dual-deep-learning
+#Lagrangian Duality for Constrained Deep Learning
