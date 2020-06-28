@@ -13,7 +13,7 @@ One popular fairness definition is the Demographic Parity(DP) which requires the
 
 #### <a name="trans"> 1.b Transprecision Computing </a>
 
-The movitation here comes from the need of reducing energy consumption. One solution for that is to reduce the precision (a.k.a number of bits) of all variables involved in the computation. However, reducing  the precision can upgrade the error of the target algorithm. Hence, we need to build a model which can predict such error based on the precision of the variables. In learning that model, we are equipped with the knowledge that higher precision configurations should generate more accurate results(smaller error). We impose such monotonic constraints in guiding the model to a more general pproximation of the target function.  Please check also the subfolder "tranprecision" and the notebook example to see how our model works.
+The movitation here comes from the need of reducing energy consumption. One solution for that is to reduce the precision (a.k.a number of bits) of all variables involved in the computation. However, reducing  the precision can upgrade the error of the target algorithm. Hence, we need to build a model which can predict such error based on the precision of the variables. In learning that model, we are equipped with the knowledge that higher precision configurations should generate more accurate results(smaller error). We impose such monotonic constraints in guiding the model to a more general pproximation of the target function.  Please check also the subfolder "tranprecision_computing" and the notebook example to see how our model works.
 
 
 
