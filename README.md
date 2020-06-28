@@ -8,10 +8,12 @@ The goal of our project is to investigate the applicability of Lagrangian dualit
 
 #### <a name="fair"> 1.a Fairness </a>
 
+One popular fairness definition is the Demographic Parity(DP) which requires the percentage of positive prediction outcomes across groups should be similar. See Eq. 10 in the paper. Please check the subfolder "fairness" and the notebook example to see how our model capture such DP fairness in learning the classifier. 
+
 
 #### <a name="trans"> 1.b Transprecision Computing </a>
 
-
+The movitation here comes from the need of reducing energy consumption. One solution for that is to reduce the precision (a.k.a number of bits) of all variables involved in the computation. However, reducing  the precision can upgrade the error of the target algorithm. Hence, we need to build a model which can predict such error based on the precision of the variables. In learning that model, we are equipped with the knowledge that higher precision configurations should generate more accurate results(smaller error). We impose such monotonic constraints in guiding the model to a more general pproximation of the target function.  Please check also the subfolder "tranprecision" and the notebook example to see how our model works.
 
 
 
