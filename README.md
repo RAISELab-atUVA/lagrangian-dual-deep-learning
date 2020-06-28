@@ -3,11 +3,6 @@
 This repository provides the implementation of the Lagrangian Dual learning Framework (LDF) described in [Lagrangian Duality for Constrained Deep Learning](https://arxiv.org/pdf/2001.09394.pdf). 
 It focuses on applications in _Fairness_ and _Transprecision Computing_. 
 
-<!-- For citation please use:
-> ''Lagrangian Duality for Constrained Deep Learning''.<br>
-> Ferdinando Fioretto, Pascal Van Hentenryck, Terrence W.K. Mak, Cuong Tran, Federico Baldo, and Michele Lombardi.<br>
-> In Proceedings of the European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases (ECML-PKDD), 2020.
- -->
 
 ## About
 
@@ -17,11 +12,12 @@ The [paper]((https://arxiv.org/pdf/2001.09394.pdf)) demonstrates experimentally 
 
 In the following we report two example applications deep learning with for [group fairness constraints](#fair) and for [transprecision computing](#trans)
 
+
 ### <a name="fair"></a>Fairness
+One popular fairness definition is the Demographic Parity(DP) which requires the percentage of positive prediction outcomes across groups should be similar. See Eq. 10 in the paper. Please check the subfolder "fairness" and the notebook example to see how our model capture such DP fairness in learning the classifier. 
 
 #### Example
 ```python
-
 ```
 
 ### <a name="trans"></a>Transprecision Computing
