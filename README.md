@@ -49,7 +49,7 @@ torch==1.3.1
 ```bibtex
 @article{Fioretto:ECML20,
     title     = "A Lagrangian Dual Framework for Deep Neural Networks with Constraints Optimization",
-    author    = "Ferdinando Fioretto and Terrence {W.K. Mak} and Federico Baldo and Michele Lombardi and  Pascal {Van  Hentenryck}",
+    author    = "Ferdinando Fioretto and  Pascal {Van  Hentenryck} and Terrence {W.K. Mak} and Cuong Tran and Federico Baldo and Michele Lombardi",
     booktitle = "European Conference on Machine Learning and  Principles and Practice of Knowledge Discovery in Databases ({ECML-PKDD})",
     year      = "2020"
 }
