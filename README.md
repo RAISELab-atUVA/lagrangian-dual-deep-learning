@@ -17,7 +17,7 @@ In the following we report two example applications deep learning with for [grou
 One popular fairness definition is the Demographic Parity(DP) which requires the percentage of positive prediction outcomes across groups should be similar. See Eq. 10 in the paper. Please check the subfolder "fairness" and the notebook example to see how our model capture such DP fairness in learning the classifier. 
 
 #### Example
-```python
+```Please check fairness/Demo_For_Bank_Data.ipynb
 ```
 
 ### <a name="trans"></a>Transprecision Computing
@@ -34,7 +34,7 @@ The problem _`O(d_l)`_ specifies the error obtained when using configuration _`d
 where _`N`_ is the number of variables involved in the computation and _`x1_i`_ , _`x2_i`_ are the precision values for the variables in _`d_1`_ and _`d_2`_ respectively.
 
 #### Example
-```python
+```Please check our notebook /transprecision_computing/Example_Running_Notebook.ipynb
 
 ```
 
