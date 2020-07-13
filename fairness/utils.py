@@ -13,26 +13,30 @@ from torch.utils.data import DataLoader, TensorDataset
 from torch import Tensor
 from sklearn.metrics import *
 
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
+if torch.cuda.is_available():
+    torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 
-DATASET_PATH  = './datasets/'
-
-### Evaluation Metrics
+# I.  Evaluation Metrics, Model Accuracy, p%-value and DI-score
 def compute_fairness_score(y_true, y_pred, z_true):
+  """
+  Return Model Accuracy, Fairness Measure( DI-score and p%-value)
+  """
   acc = accuracy_score(y_true, y_pred)
   p1 = y_pred[z_true==1]
   p0 = y_pred[z_true==0]
   p1 = np.sum(p1)/float(len(p1))
   p0 = np.sum(p0)/float(len(p0))
-  acc0 = accuracy_score(y_true[z_true == 0], y_pred[z_true == 0])
-  acc1 = accuracy_score(y_true[z_true == 1], y_pred[z_true == 1])
-  return acc, abs(p1 - p0), acc0, acc1
+
+  return acc, min(p1/p0, p0/p1), abs(p1 - p0)
+
+
+# II. Process datasets
 
 def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
 
     if name == 'census':
-        dataset = pd.read_csv(DATASET_PATH + 'census.csv', na_values='?', skipinitialspace=True)
+        dataset = pd.read_csv( './datasets/census.csv', na_values='?', skipinitialspace=True)
         x_feat_c = ['workclass', 'marital-status', 'occupation', 'relationship', 'race',
                     'native-country']
         x_feat_n = ['age', 'education-num', 'capital-gain', 'capital-loss', 'hours-per-week']
@@ -40,7 +44,7 @@ def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
         y_feat = 'fnlwgt'
         del dataset['education']
     elif name == 'default':
-        dataset = pd.read_csv(DATASET_PATH + 'default.csv', na_values='?', skipinitialspace=True)
+        dataset = pd.read_csv( '/datasets/default.csv', na_values='?', skipinitialspace=True)
         x_feat_c = ['education', 'marriage', 'bill_amt1', 'bill_amt2', 'bill_amt3',
                     'bill_amt4', 'bill_amt5', 'bill_amt6', 'pay_amt1', 'pay_amt2', 'pay_amt3',
                     'pay_amt4', 'pay_amt5', 'pay_amt6']
@@ -49,7 +53,7 @@ def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
         y_feat = 'default'
 
     elif name == 'compas':
-        dataset = pd.read_csv(DATASET_PATH + 'compas.csv', na_values='', skipinitialspace=True)
+        dataset = pd.read_csv('./datasets/compas.csv', na_values='', skipinitialspace=True)
         x_feat_c = ['sex', 'c_charge_degree', 'c_charge_desc']
         x_feat_n = ['age', 'juv_fel_count', 'decile_score', 'juv_misd_count', 'juv_other_count',
                     'priors_count', 'decile_score', 'is_recid', 'priors_count']
@@ -85,7 +89,7 @@ def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
 
 
 def load_bank_dataset():
-  bank_pd = pd.read_csv(DATASET_PATH + 'datasets/bank.csv')
+  bank_pd = pd.read_csv('./datasets/bank.csv')
   bank_pd['z'] = bank_pd['age'].apply(lambda x: x < 25 or x > 60).astype(int)
   bank_pd['label'] = bank_pd['deposit'].apply(lambda x: x == 'yes').astype(int)
   if 'deposit' in bank_pd.columns.tolist():
