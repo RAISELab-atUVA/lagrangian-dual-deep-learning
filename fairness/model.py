@@ -1,26 +1,21 @@
 from utils import *
-
+from network import *
 
 class LDSharedModel(object):
 
  def __init__(self, params):
-    # we no need to specify X_val, y_val since we provided in params of parent class
     self.device = params.get('device', 'cuda')
-    self.X_val = params['X_val']
+    for key, val in params.items():
+        setattr(self, key, val)
     self.input_size = self.X_val.shape[1]
-    self.Z_val = params['Z_val']
-    self.y_val = params['y_val']
-    X_train  = params['X_train']
-    y_train = params['y_train']
-    Z_train = params['Z_train']
-
-    self.bs = params.get('batch_size', 200)  # for safety reason in case I forgot
-    train_tensor = TensorDataset(Tensor(np.c_[X_train, Z_train]), Tensor(y_train))
-    self.train_loader = DataLoader(dataset=train_tensor, batch_size=self.bs, shuffle=True)
-    self.model =  None
+    train_tensor = TensorDataset(Tensor(np.c_[self.X_train, self.Z_train]), Tensor(self.y_train))
+    self.train_loader = DataLoader(dataset = train_tensor, batch_size = self.bs, shuffle = True)
+    self.fitted_model =  None
 
  def predict(self, X_test,Z_test):
-      # X_test should be a numpy array
+      """
+      Return Prediction for Future Test Data
+      """
       if 'numpy' not in str(type(X_test)):
         X_test= X_test.values
       X_test = torch.FloatTensor( X_test[:, :self.input_size]).to(self.device)
@@ -28,26 +23,19 @@ class LDSharedModel(object):
       for i in range(len(X_test)):
         # use associated branch for making prediction z=0 or z=1 since two branches here
         all_pred.append( self.fitted_model.forward(X_test[i,:], Z_test[i])[0].cpu().data.numpy())
-      pred =   np.concatenate(all_pred)
+      pred = np.concatenate(all_pred)
 
       return  (pred>=0.5).astype(int), pred
 
  def _model_eval(self, model):
-
+     """
+     Evaluate current model based on Accuracy and Fairness Score (DI-score)
+     """
      self.fitted_model = copy.deepcopy(model)
-     self.fitted_model.eval()
-     Z_val = self.Z_val
-     y_pred, y_soft_pred = self.predict(self.X_val, Z_val)
+     y_pred_val, _ = self.predict(self.X_val, self.Z_val)
+     acc, p_value, di_score = compute_fairness_score(self.y_val, y_pred_val, self.Z_val)
 
-     y_pred_1 = y_pred[Z_val == 1]
-     y_pred_0 = y_pred[Z_val == 0]
-     n1, n0 = float(len(y_pred_1)), float(len(y_pred_0))
-     p1, p0 = np.sum(y_pred_1) / n1, np.sum(y_pred_0) / n0
-     acc = accuracy_score(self.y_val, y_pred)
-     p_value = min(p1 / p0, p0 / p1)
-     delta_f = abs(np.mean( y_soft_pred[Z_val==0]) - np.mean(y_soft_pred[Z_val==1]))
-     # model for evaluation is acc - 3 *DI_score
-     return  acc, abs(p1 - p0), p_value, delta_f
+     return  acc, p_value, di_score
 
  def fit(self, options):
 
@@ -58,6 +46,7 @@ class LDSharedModel(object):
      step_size = options['step_size']
 
      lr_mult = options['lr_mult'] # Initial Lagrangian multiplier, 0 for LD method
+     return_output = options.get('return_output', False)
      torch.manual_seed(seed)
      model = SharedNet(options['model_params']).to(self.device)
      bce_criterion = nn.BCELoss(reduce='mean')
@@ -93,34 +82,42 @@ class LDSharedModel(object):
              loss.backward()
              optimizer.step()
 
-         acc, di_score, p_value, delta_f = self._model_eval(model)
-         logs.append([acc, di_score, p_value, lr_mult, delta_f])
+         acc, p_value, di_score = self._model_eval(model)
+         logs.append(copy.deepcopy([acc, di_score, p_value, lr_mult]))
 
-         lr_mult += step_size * np.mean(violation_list) # probably we can replace mean by median
+         lr_mult += step_size * np.mean(violation_list)
 
-     self.model = model
+     self.fitted_model = model
      self.best_options = options
      self.logs = logs
      self.best_acc = acc
-     return model, acc, logs
+
+     if return_output:
+        return model, acc, logs
 
  def hyper_opt(self, grid_search_list):
 
-     best_acc = -np.inf
+     best_metric = -np.inf
      best_model = None
      best_options = None
      best_logs = None
      for options in grid_search_list:
          print( options)
+         options['return_output']  = True
          curr_model, curr_acc, logs = self.fit(options)
-         if curr_acc > best_acc:
-             best_acc = curr_acc
+         if options['acc_only'] :
+             curr_metric = curr_acc
+         else:
+             curr_metric = logs[-1][0] - logs[-1][1] # Acc - DI-score as a heuristic rule to choose the model
+
+         if curr_metric > best_metric:
+             best_metric = curr_metric
              best_model = curr_model
              best_options = options
              best_logs = logs
 
      self.model = best_model
-     self.best_acc = best_acc
+     self.best_metric = best_metric
      self.best_options = best_options
      self.logs = best_logs
 
