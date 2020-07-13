@@ -24,7 +24,8 @@ def main():
         for seed in range(5):
             X_train, X_val, X_test, y_train, y_val, y_test, Z_train, Z_val, Z_test = get_data_loader(pd00, feats,
                                                                                                      label_name, z_name,
-                                                                                                     seed=seed)
+
+                                                                                                    seed=seed)
             params = {}
             params['X_train'] = X_train
             params['X_val'] = X_val
@@ -32,8 +33,8 @@ def main():
             params['y_val'] = y_val
             params['Z_train'] = Z_train
             params['Z_val'] = Z_val
-            params['device'] = 'cuda'
-            params['batch_size'] = 300
+            params['device'] = 'cuda' if torch.cuda.is_available() else 'cpu'
+            params['bs'] = 256  # batch size
             options = {}
             options['model_lr'] = 1e-3
             options['step_size'] = 0
@@ -55,7 +56,7 @@ def main():
                             grid_search_list.append(curr_options)
 
                 mc_model.hyper_opt(grid_search_list)
-                best_options = mc_model.best_options
+
 
             if len(best_options.keys()) == 0:
                 print('WARNING we havent optimized our network structure')
