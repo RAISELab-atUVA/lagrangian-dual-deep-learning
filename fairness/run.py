@@ -39,7 +39,8 @@ def main():
             options['model_lr'] = 1e-3
             options['step_size'] = 0
             options['lr_mult'] = 0
-            options['epochs'] = 100
+            options['epochs'] = 300
+            options['acc_only'] = True
             input_dim = X_train.shape[1]
             options['input_size'] = input_dim
             grid_search_list = []
