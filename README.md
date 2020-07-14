@@ -32,11 +32,13 @@ The problem _`O(d_l)`_ specifies the error obtained when using configuration _`d
 `\forall i \in [N] x1_i <= x2_i`<br>
 where _`N`_ is the number of variables involved in the computation and _`x1_i`_ , _`x2_i`_ are the precision values for the variables in _`d_1`_ and _`d_2`_ respectively.
 
+We provide an example of loading the synthetic dataset and running different models on <code> <i> transprecision_computing/Example_Running_Notebook.ipynb </i>  </code>
+
 #### Example
 
+    python3 run_experiments.py
+
        
-
-
 #### Requirements
 ```python
 python==3.7
