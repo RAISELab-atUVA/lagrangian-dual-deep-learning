@@ -43,7 +43,7 @@ def load_dataset(name, rm_pfeat=False, classes=[0, 1], to_numeric=True):
                     'native-country']
         x_feat_n = ['age', 'education-num', 'capital-gain', 'capital-loss', 'hours-per-week']
         p_feat = 'sex'
-        y_feat = 'fnlwgt'
+        y_feat = 'income'
         del dataset['education']
     elif name == 'default':
         dataset = pd.read_csv(WORK_PATH +  '/datasets/default.csv', na_values='?', skipinitialspace=True)
