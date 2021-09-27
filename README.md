@@ -47,11 +47,16 @@ torch==1.3.1
 
 #### Cite As
 ```bibtex
-@article{Fioretto:ECML20,
-    title     = "A Lagrangian Dual Framework for Deep Neural Networks with Constraints Optimization",
-    author    = "Ferdinando Fioretto and  Pascal {Van  Hentenryck} and Terrence {W.K. Mak} and Cuong Tran and Federico Baldo and Michele Lombardi",
-    booktitle = "European Conference on Machine Learning and  Principles and Practice of Knowledge Discovery in Databases ({ECML-PKDD})",
-    year      = "2020"
+@inproceedings{Fioretto:ECML20,
+    title     = {A Lagrangian Dual Framework for Deep Neural Networks with Constraints Optimization},
+    author    = {Ferdinando Fioretto and  Pascal {Van  Hentenryck} and Terrence {W.K. Mak} and Cuong Tran and Federico Baldo and Michele Lombardi},
+    booktitle = {European Conference on Machine Learning and  Principles and Practice of Knowledge Discovery in Databases ({ECML-PKDD})},
+    year      = {2020},
+    series    = {Lecture Notes in Computer Science},
+    volume    = {12461},
+    pages     = {118--135},
+    publisher = {Springer},
+ 
 }
 ```
  
